@@ -1,5 +1,6 @@
 import os.path
 import tensorflow as tf
+import numpy as np
 import helper
 import warnings
 from distutils.version import LooseVersion
@@ -85,8 +86,8 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     # TODO: Implement function
     # Done
     # Check if the arguments can be passed to softmax without reshape
-    logits = reshape(nn_last_layer, (-1, num_classes))
-    labels = reshape(correct_labels, (-1, num_classes))
+    logits = np.reshape(nn_last_layer, (-1, num_classes))
+    labels = np.reshape(correct_labels, (-1, num_classes))
     
     cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels)
     cross_entropy_loss = tf.reduce_mean(cross_entropy)
