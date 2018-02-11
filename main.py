@@ -64,11 +64,11 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     
     conv_1x1_l4 = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     fuse_7_4 = tf.add(conv_1x1_l4, fcn32)
-    fcn16 = tf.layers.conv2d_transpose(fuse_7_4, num_classes, 4, strides=(4,4), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    fcn16 = tf.layers.conv2d_transpose(fuse_7_4, num_classes, 4, strides=(2,2), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     
     conv_1x1_l3 = tf.layers.conv2d(vgg_layer3_out, num_classes, 1, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     fuse_7_4_3 = tf.add(conv_1x1_l3, fcn16)
-    fcn8 = tf.layers.conv2d_transpose(fuse_7_4_3, num_classes, 4, strides=(8,8), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    fcn8 = tf.layers.conv2d_transpose(fuse_7_4_3, num_classes, 16, strides=(8,8), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     
     return fcn8
 tests.test_layers(layers)
