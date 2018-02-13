@@ -59,16 +59,33 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     :return: The Tensor for the last layer of output
     """
     # TODO: Implement function
-    conv_1x1_l7 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    fcn32 = tf.layers.conv2d_transpose(conv_1x1_l7, num_classes, 4, strides=(2,2), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    conv_1x1_l7 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, padding='same', 
+                                   kernel_initializer=tf.truncated_normal_initializer(stddev=0.01), 
+                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     
-    conv_1x1_l4 = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    fcn32 = tf.layers.conv2d_transpose(conv_1x1_l7, num_classes, 4, strides=(2,2), padding='same', 
+                                       kernel_initializer=tf.truncated_normal_initializer(stddev=0.01), 
+                                       kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    
+    conv_1x1_l4 = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, padding='same', 
+                                   kernel_initializer=tf.truncated_normal_initializer(stddev=0.01), 
+                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    
     fuse_7_4 = tf.add(conv_1x1_l4, fcn32)
-    fcn16 = tf.layers.conv2d_transpose(fuse_7_4, num_classes, 4, strides=(2,2), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     
-    conv_1x1_l3 = tf.layers.conv2d(vgg_layer3_out, num_classes, 1, padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    fcn16 = tf.layers.conv2d_transpose(fuse_7_4, num_classes, 4, strides=(2,2), padding='same', 
+                                       kernel_initializer=tf.truncated_normal_initializer(stddev=0.01), 
+                                       kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    
+    conv_1x1_l3 = tf.layers.conv2d(vgg_layer3_out, num_classes, 1, padding='same', 
+                                   kernel_initializer=tf.truncated_normal_initializer(stddev=0.01), 
+                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    
     fuse_7_4_3 = tf.add(conv_1x1_l3, fcn16)
-    fcn8 = tf.layers.conv2d_transpose(fuse_7_4_3, num_classes, 16, strides=(8,8), padding='same', kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    
+    fcn8 = tf.layers.conv2d_transpose(fuse_7_4_3, num_classes, 16, strides=(8,8), padding='same', 
+                                      kernel_initializer=tf.truncated_normal_initializer(stddev=0.01), 
+                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     
     return fcn8
 tests.test_layers(layers)
@@ -121,8 +138,11 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     
     for epoch in range(epochs):
         for image, label in get_batches_fn(batch_size):
-            _, training_loss = sess.run([train_op, cross_entropy_loss] , feed_dict={input_image: image, correct_label: label, keep_prob: 0.8, learning_rate: 1e-5})    
+            _, training_loss = sess.run([train_op, cross_entropy_loss] , 
+                                        feed_dict={input_image: image, correct_label: label, keep_prob: 0.5, learning_rate: 1e-5})    
+        
         print("Epoch: %d of %d ; Loss: %.4f" %( epoch+1, epochs, training_loss))
+
 tests.test_train_nn(train_nn)
 
 
@@ -153,7 +173,7 @@ def run():
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
         # TODO: Build NN using load_vgg, layers, and optimize function
-        correct_label = tf.placeholder(tf.float32)
+        correct_label = tf.placeholder(tf.int32)
         learning_rate = tf.placeholder(tf.float32)
         
         input_image, keep_prob, layer3_out,  layer4_out, layer7_out = load_vgg(sess, vgg_path)
