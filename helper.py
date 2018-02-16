@@ -127,10 +127,6 @@ def gen_aug_batch_function(data_folder, image_shape):
 
                 image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
                 gt_image = scipy.misc.imresize(scipy.misc.imread(gt_image_file), image_shape)
-
-                gt_bg = np.all(gt_image == background_color, axis=2)
-                gt_bg = gt_bg.reshape(*gt_bg.shape, 1)
-                gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
                 
                 image = np.fliplr(image)
                 gt_image = np.fliplr(gt_image)
@@ -149,6 +145,10 @@ def gen_aug_batch_function(data_folder, image_shape):
                     random_bright = 0.25+np.random.uniform()
                     image_HSV[:,:,2] = image_HSV[:,:,2]*random_bright
                     image = cv2.cvtColor(image_HSV,cv2.COLOR_HSV2RGB)
+                
+                gt_bg = np.all(gt_image == background_color, axis=2)
+                gt_bg = gt_bg.reshape(*gt_bg.shape, 1)
+                gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
                 
                 images.append(image)
                 gt_images.append(gt_image)
