@@ -134,8 +134,6 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     """
     # TODO: Implement function
     print("Training..." + "\n")
-    print(len(get_batches_fn))
-    print(len(get_batches_fn(batch_size)))
     
     for epoch in range(epochs):
         for image, label in get_batches_fn(batch_size):
@@ -169,18 +167,6 @@ def run():
         vgg_path = os.path.join(data_dir, 'vgg')
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
-        print(len(get_batches_fn))
-        print(len(get_batches_fn(batch_size)))
-        # OPTIONAL: Augment Images for better results
-        #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
-        #display shape etc of get_batches_fn to correctly augment data
-#        for image, label in get_batches_fn:
-#            aug_images.append(image) #do operation now
-#            aug_label = label #do same operation
-#            aug_set.append(aug_image, aug_label)
-#            
-#        for image, label in aug_set:
-#            get_batches_fn.append(aug_image, aug_label)
             
         # TODO: Build NN using load_vgg, layers, and optimize function
         correct_label = tf.placeholder(tf.int32)
