@@ -1,5 +1,6 @@
 import os.path
 import tensorflow as tf
+import time
 import numpy as np
 import helper
 import warnings
@@ -137,6 +138,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train
 
     
     for epoch in range(epochs):
+        start_time = time.time()
         for (image, label),(aug_image, aug_label) in zip(get_batches_fn(batch_size), get_aug_batches_fn(batch_size)):
             _, training_loss = sess.run([train_op, cross_entropy_loss] , 
                                         feed_dict={input_image: image, correct_label: label, keep_prob: 0.5, learning_rate: 1e-5})
@@ -144,7 +146,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train
             _, training_loss = sess.run([train_op, cross_entropy_loss] , 
                                         feed_dict={input_image: aug_image, correct_label: aug_label, keep_prob: 0.5, learning_rate: 1e-5})
         
-        print("Epoch: %d of %d ; Loss: %.4f" %( epoch+1, epochs, training_loss))
+        print("Epoch: %d of %d ; Loss: %.4f; It took %.3f s to finish this epoch" %( epoch+1, epochs, training_loss, time.time()-start_time))
 
 tests.test_train_nn(train_nn)
 
