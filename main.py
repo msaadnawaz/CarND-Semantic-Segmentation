@@ -117,7 +117,7 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
 tests.test_optimize(optimize)
 
 
-def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
+def train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train_op, cross_entropy_loss, input_image,
              correct_label, keep_prob, learning_rate):
     """
     Train neural network and print out the loss during training.
@@ -137,11 +137,16 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 
     
     for epoch in range(epochs):
-        for image, label in get_batches_fn(batch_size):
+        for (image, label),(aug_image, aug_label) in zip(get_batches_fn(batch_size), get_aug_batches_fn(batch_size)):
             _, training_loss = sess.run([train_op, cross_entropy_loss] , 
-                                        feed_dict={input_image: image, correct_label: label, keep_prob: 0.5, learning_rate: 1e-5})    
+                                        feed_dict={input_image: image, correct_label: label, keep_prob: 0.5, learning_rate: 1e-5})
         
-        print("Epoch: %d of %d ; Loss: %.4f" %( epoch+1, epochs, training_loss))
+        print("Epoch: %d of %d ; Loss: %.4f; Part: %d" %( epoch+1, epochs, training_loss, 1))
+        
+            _, training_loss = sess.run([train_op, cross_entropy_loss] , 
+                                        feed_dict={input_image: aug_image, correct_label: aug_label, keep_prob: 0.5, learning_rate: 1e-5})
+        
+        print("Epoch: %d of %d ; Loss: %.4f; Part: %d" %( epoch+1, epochs, training_loss, 2))
 
 tests.test_train_nn(train_nn)
 
@@ -168,9 +173,9 @@ def run():
         vgg_path = os.path.join(data_dir, 'vgg')
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
-        print("Generator shape:")
-        print(np.shape(np.fromiter(get_batches_fn(batch_size), int)))
+        get_aug_batches_fn = helper.gen_aug_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
         # OPTIONAL: Augment Images for better results
+        get_aug_batches_fn = helper.gen_aug_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
         #display shape etc of get_batches_fn to correctly augment data
 #        for image, label in get_batches_fn:
@@ -191,7 +196,7 @@ def run():
         
         # TODO: Train NN using the train_nn function
         sess.run(tf.global_variables_initializer())
-        train_nn(sess, epochs, batch_size, get_batches_fn, train_optimizer, cross_entropy_loss, input_image, 
+        train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train_optimizer, cross_entropy_loss, input_image, 
                  correct_label, keep_prob, learning_rate)
         # TODO: Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)

@@ -131,6 +131,7 @@ def test_train_nn(train_nn):
             'epochs': epochs,
             'batch_size': batch_size,
             'get_batches_fn': get_batches_fn,
+            'get_aug_batches_fn': get_aug_batches_fn,
             'train_op': train_op,
             'cross_entropy_loss': cross_entropy_loss,
             'input_image': input_image,
