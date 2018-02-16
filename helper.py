@@ -132,8 +132,8 @@ def gen_aug_batch_function(data_folder, image_shape):
                 gt_bg = gt_bg.reshape(*gt_bg.shape, 1)
                 gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
                 
-                image = cv2.fliplr(image)
-                gt_image = cv2.fliplr(gt_image)
+                image = np.fliplr(image)
+                gt_image = np.fliplr(gt_image)
                 
                 #translate
                 if np.random.random() < 0.5:
