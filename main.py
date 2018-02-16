@@ -141,12 +141,10 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train
             _, training_loss = sess.run([train_op, cross_entropy_loss] , 
                                         feed_dict={input_image: image, correct_label: label, keep_prob: 0.5, learning_rate: 1e-5})
         
-        print("Epoch: %d of %d ; Loss: %.4f; Part: %d" %( epoch+1, epochs, training_loss, 1))
-        
             _, training_loss = sess.run([train_op, cross_entropy_loss] , 
                                         feed_dict={input_image: aug_image, correct_label: aug_label, keep_prob: 0.5, learning_rate: 1e-5})
         
-        print("Epoch: %d of %d ; Loss: %.4f; Part: %d" %( epoch+1, epochs, training_loss, 2))
+        print("Epoch: %d of %d ; Loss: %.4f" %( epoch+1, epochs, training_loss))
 
 tests.test_train_nn(train_nn)
 
