@@ -146,7 +146,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train
             _, training_loss = sess.run([train_op, cross_entropy_loss] , 
                                         feed_dict={input_image: aug_image, correct_label: aug_label, keep_prob: 0.5, learning_rate: 1e-5})
         
-        print("Epoch: %d of %d ; Loss: %.4f; It took %.3f s to finish this epoch" %( epoch+1, epochs, training_loss, time.time()-start_time))
+        print("Epoch: %d of %d ; Loss: %.4f; It took %.3f seconds to finish this epoch" %( epoch+1, epochs, training_loss, time.time()-start_time))
 
 tests.test_train_nn(train_nn)
 
@@ -163,7 +163,7 @@ def run():
 
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
-
+    saver = tf.train.Saver()
     # OPTIONAL: Train and Inference on the cityscapes dataset instead of the Kitti dataset.
     # You'll need a GPU with at least 10 teraFLOPS to train on.
     #  https://www.cityscapes-dataset.com/
@@ -193,7 +193,10 @@ def run():
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
 
         # OPTIONAL: Apply the trained model to a video
-
+        
+        # Save the variables to disk.
+        save_path = saver.save(sess, "./saved_training_model/model")
+        print("Model saved in path: %s" % save_path)
 
 if __name__ == '__main__':
     run()
