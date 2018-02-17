@@ -135,7 +135,6 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train
     """
     # TODO: Implement function
     print("Training..." + "\n")
-
     
     for epoch in range(epochs):
         start_time = time.time()
@@ -172,9 +171,12 @@ def run():
         vgg_path = os.path.join(data_dir, 'vgg')
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
+
         # OPTIONAL: Augment Images for better results
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
         get_aug_batches_fn = helper.gen_aug_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
+
+
             
         # TODO: Build NN using load_vgg, layers, and optimize function
         correct_label = tf.placeholder(tf.int32)
