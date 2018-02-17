@@ -14,15 +14,17 @@ import cv2
 
 def restore_model(sess):
     
-    saver = tf.train.Saver()
     saver = tf.train.import_meta_graph('./saved_training_model/model.meta')
     saver.restore(sess,tf.train.latest_checkpoint('./saved_training_model/'))
     print("Model restored.")
-    
+    all_vars = tf.get_collection('vars')
+    for v in all_vars:
+        v_ = sess.run(v)
+        print(v_)
     graph = tf.get_default_graph()
-    input_image = graph.get_tensor_by_name('input_image:0')
     keep_prob = graph.get_tensor_by_name('keep_prob:0')
     logits = graph.get_tensor_by_name('logits:0')
+    input_image = graph.get_tensor_by_name('input_image:0')
 
     return input_image, keep_prob, logits
 

@@ -158,7 +158,7 @@ def run():
     runs_dir = './runs'
     tests.test_for_kitti_dataset(data_dir)
     
-    epochs = 10
+    epochs = 20
     batch_size = 2
 
     # Download pretrained vgg model
@@ -197,6 +197,7 @@ def run():
         
         # Save the variables to disk.
         save_path = saver.save(sess, "./saved_training_model/model")
+        tf.train.write_graph(sess.graph_def, "./saved_training_model/", "model", False)
         print("Model saved in path: %s" % save_path)
 
 if __name__ == '__main__':
