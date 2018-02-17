@@ -1,5 +1,6 @@
 import os.path
 import tensorflow as tf
+import time
 import numpy as np
 import helper
 import warnings
@@ -117,7 +118,7 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
 tests.test_optimize(optimize)
 
 
-def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
+def train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train_op, cross_entropy_loss, input_image,
              correct_label, keep_prob, learning_rate):
     """
     Train neural network and print out the loss during training.
@@ -136,11 +137,15 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     print("Training..." + "\n")
     
     for epoch in range(epochs):
-        for image, label in get_batches_fn(batch_size):
+        start_time = time.time()
+        for (image, label),(aug_image, aug_label) in zip(get_batches_fn(batch_size), get_aug_batches_fn(batch_size)):
             _, training_loss = sess.run([train_op, cross_entropy_loss] , 
-                                        feed_dict={input_image: image, correct_label: label, keep_prob: 0.5, learning_rate: 1e-5})    
+                                        feed_dict={input_image: image, correct_label: label, keep_prob: 0.5, learning_rate: 1e-5})
         
-        print("Epoch: %d of %d ; Loss: %.4f" %( epoch+1, epochs, training_loss))
+            _, training_loss = sess.run([train_op, cross_entropy_loss] , 
+                                        feed_dict={input_image: aug_image, correct_label: aug_label, keep_prob: 0.5, learning_rate: 1e-5})
+        
+        print("Epoch: %d of %d ; Loss: %.4f; It took %.3f seconds to finish this epoch" %( epoch+1, epochs, training_loss, time.time()-start_time))
 
 tests.test_train_nn(train_nn)
 
@@ -152,12 +157,11 @@ def run():
     runs_dir = './runs'
     tests.test_for_kitti_dataset(data_dir)
     
-    epochs = 10
+    epochs = 20
     batch_size = 2
 
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
-
     # OPTIONAL: Train and Inference on the cityscapes dataset instead of the Kitti dataset.
     # You'll need a GPU with at least 10 teraFLOPS to train on.
     #  https://www.cityscapes-dataset.com/
@@ -167,6 +171,12 @@ def run():
         vgg_path = os.path.join(data_dir, 'vgg')
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
+
+        # OPTIONAL: Augment Images for better results
+        #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
+        get_aug_batches_fn = helper.gen_aug_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
+
+
             
         # TODO: Build NN using load_vgg, layers, and optimize function
         correct_label = tf.placeholder(tf.int32)
@@ -178,13 +188,19 @@ def run():
         
         # TODO: Train NN using the train_nn function
         sess.run(tf.global_variables_initializer())
-        train_nn(sess, epochs, batch_size, get_batches_fn, train_optimizer, cross_entropy_loss, input_image, 
+        saver = tf.train.Saver()
+        train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train_optimizer, cross_entropy_loss, input_image, 
                  correct_label, keep_prob, learning_rate)
         # TODO: Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
-
+        
+        
         # OPTIONAL: Apply the trained model to a video
-
+        
+        # Save the variables to disk.
+        save_path = saver.save(sess, "./saved_training_model/model")
+        tf.train.write_graph(sess.graph_def, "./saved_training_model/", "model", False)
+        print("Model saved in path: %s" % save_path)
 
 if __name__ == '__main__':
     run()
