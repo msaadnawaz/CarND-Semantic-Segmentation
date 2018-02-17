@@ -7,7 +7,7 @@ Created on Fri Feb 16 15:44:55 2018
 
 # Import everything needed to edit/save/watch video clips
 from moviepy.editor import VideoFileClip
-import ternsorflow as tf
+import tensorflow as tf
 import scipy.misc
 import numpy as np
 import cv2
