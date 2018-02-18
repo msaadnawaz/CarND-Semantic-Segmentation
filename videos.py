@@ -18,7 +18,7 @@ def restore_model(sess):
     saver = tf.train.import_meta_graph('./saved_training_model/model.ckpt.meta')
     saver.restore(sess,"./saved_training_model/model.ckpt")
     print("Model restored.")
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model.ckpt", tensor_name='image_input', all_tensors=False, all_tensor_names=False)
+    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model.ckpt", tensor_name='input_image', all_tensors=False, all_tensor_names=False)
     
     graph = tf.get_default_graph()
     
