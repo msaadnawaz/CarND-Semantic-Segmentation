@@ -22,9 +22,10 @@ def restore_model(sess):
         v_ = sess.run(v)
         print(v_)
     graph = tf.get_default_graph()
+    
+    input_image = graph.get_tensor_by_name('input_image:0')
     keep_prob = graph.get_tensor_by_name('keep_prob:0')
     logits = graph.get_tensor_by_name('logits:0')
-    input_image = graph.get_tensor_by_name('input_image:0')
 
     return input_image, keep_prob, logits
 
