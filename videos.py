@@ -11,16 +11,15 @@ import tensorflow as tf
 import scipy.misc
 import numpy as np
 import cv2
+from tensorflow.python.tools import inspect_checkpoint as chkp
 
 def restore_model(sess):
     
     saver = tf.train.import_meta_graph('./saved_training_model/model.meta')
     saver.restore(sess,tf.train.latest_checkpoint('./saved_training_model/'))
     print("Model restored.")
-    all_vars = tf.get_collection('vars')
-    for v in all_vars:
-        v_ = sess.run(v)
-        print(v_)
+    chkp.print_tensors_in_checkpoint_file("./saved_training_model/model.meta", tensor_name='', all_tensors=True)
+    
     graph = tf.get_default_graph()
     
     input_image = graph.get_tensor_by_name('input_image:0')

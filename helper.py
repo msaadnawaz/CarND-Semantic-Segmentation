@@ -136,7 +136,7 @@ def gen_aug_batch_function(data_folder, image_shape):
                     rows,columns = image_shape
                     M = np.float32([[1,0,np.random.randint(math.floor(-0.5*columns),math.floor(0.5*columns))],[0,1,np.random.randint(math.floor(-0.5*rows),math.floor(0.5*rows))]])
                    
-                    image = cv2.warpAffine(image,M,(image_shape[1],image_shape[0]))
+                    image = cv2.warpAffine(image,M,(columns,rows))
                     gt_image = cv2.warpAffine(gt_image,M,(columns,rows))
                 
                 #brightness
