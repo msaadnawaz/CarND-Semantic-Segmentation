@@ -198,8 +198,8 @@ def run():
         # OPTIONAL: Apply the trained model to a video
         
         # Save the variables to disk.
-        save_path = saver.save(sess, "./saved_training_model/model", write_meta_graph = 'FALSE')
-        tf.train.write_graph(sess.graph_def, "./saved_training_model/", "model.pb", False)
+        save_path = saver.save(sess, "./saved_training_model/model.ckpt", write_meta_graph = 'TRUE')
+        #tf.train.write_graph(sess.graph_def, "./saved_training_model/", "model.pb", False)
         print("Model saved in path: %s" % save_path)
 
 if __name__ == '__main__':
