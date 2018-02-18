@@ -188,7 +188,8 @@ def run():
         
         # TODO: Train NN using the train_nn function
         sess.run(tf.global_variables_initializer())
-        saver = tf.train.Saver()
+        saver = tf.train.Saver({'input_image': input_image, 'keep_prob': keep_prob, 'logits': logits})
+        
         train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train_optimizer, cross_entropy_loss, input_image, 
                  correct_label, keep_prob, learning_rate)
         # TODO: Save inference data using helper.save_inference_samples
@@ -198,8 +199,7 @@ def run():
         # OPTIONAL: Apply the trained model to a video
         
         # Save the variables to disk.
-        save_path = saver.save(sess, "./saved_training_model/model")
-        tf.train.write_graph(sess.graph_def, "./saved_training_model/", "model.meta", False)
+        save_path = saver.save(sess, "./saved_training_model/model", write_meta_graph = 'TRUE')
         print("Model saved in path: %s" % save_path)
 
 if __name__ == '__main__':
