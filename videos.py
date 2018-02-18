@@ -18,11 +18,11 @@ def restore_model(sess):
     saver = tf.train.import_meta_graph('./saved_training_model/model.ckpt.meta')
     saver.restore(sess,"./saved_training_model/model.ckpt")
     print("Model restored.")
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model.ckpt", tensor_name='', all_tensors=False, all_tensor_names=True)
+    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model.ckpt", tensor_name='image_input', all_tensors=False, all_tensor_names=False)
     
     graph = tf.get_default_graph()
     
-    input_image = graph.get_operation_by_name('input_image:0')
+    input_image = graph.get_operation_by_name('input_image')
     keep_prob = graph.get_tensor_by_name('keep_prob:0')
     logits = graph.get_tensor_by_name('logits:0')
 
