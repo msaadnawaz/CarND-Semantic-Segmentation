@@ -18,13 +18,16 @@ def restore_model(sess):
     saver = tf.train.import_meta_graph('./saved_training_model/model.meta')
     saver.restore(sess,'./saved_training_model/model')
     print("Model restored.")
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='input_image', all_tensors=False, all_tensor_names=False)
+    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='', all_tensors=False, all_tensor_names=True)
     
-    graph = tf.get_default_graph()
+    #graph = tf.get_default_graph()
     
-    input_image = graph.get_tensor_by_name('input_image:0')
-    keep_prob = graph.get_tensor_by_name('keep_prob:0')
-    logits = graph.get_tensor_by_name('logits:0')
+    input_image = tf.get_collection("input_image")[0]
+    keep_prob = tf.get_collection("keep_prob")[0]
+    logits = tf.get_collection("logits")[0]
+    #input_image = graph.get_tensor_by_name('input_image:0')
+    #keep_prob = graph.get_tensor_by_name('keep_prob:0')
+    #logits = graph.get_tensor_by_name('logits:0')
 
     return input_image, keep_prob, logits
 
