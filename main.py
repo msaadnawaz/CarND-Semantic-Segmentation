@@ -181,7 +181,11 @@ def run():
         # TODO: Build NN using load_vgg, layers, and optimize function
         correct_label = tf.placeholder(tf.int32)
         learning_rate = tf.placeholder(tf.float32)
-
+        
+        input_image = tf.placeholder(tf.float32)
+        keep_prob = tf.placeholder(tf.float32)
+        logits = tf.placeholder(tf.float32)
+        
         input_image, keep_prob, layer3_out,  layer4_out, layer7_out = load_vgg(sess, vgg_path)
         layers_output = layers(layer3_out, layer4_out, layer7_out, num_classes)
         logits, train_optimizer, cross_entropy_loss = optimize(layers_output, correct_label, learning_rate, num_classes)
@@ -194,7 +198,7 @@ def run():
         # TODO: Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
         
-        saver = tf.train.Saver()#{'input_image': input_image, 'keep_prob': keep_prob, 'logits': logits})
+        saver = tf.train.Saver({'input_image': input_image, 'keep_prob': keep_prob, 'logits': logits})
         # OPTIONAL: Apply the trained model to a video
         
         # Save the variables to disk.
