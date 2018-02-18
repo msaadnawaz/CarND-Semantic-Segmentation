@@ -158,7 +158,7 @@ def run():
     tests.test_for_kitti_dataset(data_dir)
     
     epochs = 1
-    batch_size = 10
+    batch_size = 50
 
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
@@ -194,7 +194,7 @@ def run():
         # TODO: Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
         
-        saver = tf.train.Saver({'input_image': input_image, 'keep_prob': keep_prob, 'logits': logits})
+        saver = tf.train.Saver()#{'input_image': input_image, 'keep_prob': keep_prob, 'logits': logits})
         # OPTIONAL: Apply the trained model to a video
         
         # Save the variables to disk.
