@@ -14,7 +14,7 @@ import cv2
 
 def restore_model(sess):
     
-    #saver = tf.train.import_meta_graph('./saved_training_model/model.meta')
+    saver = tf.train.import_meta_graph('./saved_training_model/model.meta')
     saver.restore(sess,tf.train.latest_checkpoint('./saved_training_model/'))
     print("Model restored.")
     all_vars = tf.get_collection('vars')
