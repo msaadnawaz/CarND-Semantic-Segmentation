@@ -18,9 +18,9 @@ def restore_model(sess):
     saver = tf.train.import_meta_graph('./saved_training_model/model.meta')
     saver.restore(sess,'./saved_training_model/model')
     print("Model restored.")
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='input_image', all_tensors=False, all_tensor_names=False)
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='keep_prob', all_tensors=False, all_tensor_names=False)
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='logits', all_tensors=False, all_tensor_names=False)
+    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='input_image:0', all_tensors=False, all_tensor_names=False)
+    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='keep_prob:0', all_tensors=False, all_tensor_names=False)
+    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='logits:0', all_tensors=False, all_tensor_names=False)
     
     #graph = tf.get_default_graph()
     
