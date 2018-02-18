@@ -15,7 +15,7 @@ from tensorflow.python.tools import inspect_checkpoint as chkp
 
 def restore_model(sess):
     
-    #saver = tf.train.import_meta_graph('./saved_training_model/model.ckpt')
+    saver = tf.train.import_meta_graph('./saved_training_model/model.ckpt')
     saver.restore(sess,"./saved_training_model/model.ckpt")
     print("Model restored.")
     chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model.ckpt", tensor_name='', all_tensors=True, all_tensor_names=True)
