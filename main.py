@@ -185,10 +185,10 @@ def run():
         input_image, keep_prob, layer3_out,  layer4_out, layer7_out = load_vgg(sess, vgg_path)
         layers_output = layers(layer3_out, layer4_out, layer7_out, num_classes)
         logits, train_optimizer, cross_entropy_loss = optimize(layers_output, correct_label, learning_rate, num_classes)
-        
+        saver = tf.train.Saver({'input_image': input_image, 'keep_prob': keep_prob, 'logits': logits})
         # TODO: Train NN using the train_nn function
         sess.run(tf.global_variables_initializer())
-        saver = tf.train.Saver({'input_image': input_image, 'keep_prob': keep_prob, 'logits': logits})
+        
         
         train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train_optimizer, cross_entropy_loss, input_image, 
                  correct_label, keep_prob, learning_rate)
