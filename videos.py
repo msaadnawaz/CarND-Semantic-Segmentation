@@ -32,6 +32,8 @@ def restore_model(sess):
     return input_image, keep_prob, logits
 
 def process_image(sess, image, image_shape, input_image, keep_prob, logits):
+    image = scipy.misc.imresize(image, image_shape)
+    
     im_softmax = sess.run([tf.nn.softmax(logits)],
                            {keep_prob: 1.0, input_image: [image]})
     im_softmax = im_softmax[0][:, 1].reshape(image_shape[0], image_shape[1])
