@@ -48,10 +48,7 @@ def process_image(sess, image, input_image, image_shape, keep_prob, logits):
 def semantic_segmentation(image):
     
     image_shape = (160, 576) #shape check
-    with tf.Session() as sess:
-        input_image, keep_prob, logits = restore_model(sess)
-        with tf.Graph().as_default():
-            output_image = process_image(sess, image, input_image, image_shape, keep_prob, logits)
+    output_image = process_image(sess, image, input_image, image_shape, keep_prob, logits)
         
     return output_image
 
@@ -61,15 +58,18 @@ def video_run():
     video_data_dir = './data/data_videos'
 
     videos = ['project_video', 'challenge_video', 'harder_challenge_video', 'night_video', 'city_challenge']
-
-    for video in videos:
-        path = video_data_dir+'/'+video+'.mp4'
-        print(path)
-        clip = VideoFileClip(path)
-        output = video_output_dir+'/'+video+'_output.mp4'
     
-        road_clip = clip.fl_image(semantic_segmentation) #NOTE: this function expects color images!!
-        road_clip.write_videofile(output, audio=False)
+    with tf.Session() as sess:
+        input_image, keep_prob, logits = restore_model(sess)
+        with tf.Graph().as_default():
+            for video in videos:
+                path = video_data_dir+'/'+video+'.mp4'
+                print(path)
+                clip = VideoFileClip(path)
+                output = video_output_dir+'/'+video+'_output.mp4'
+            
+                road_clip = clip.fl_image(semantic_segmentation) #NOTE: this function expects color images!!
+                road_clip.write_videofile(output, audio=False)
 
 if __name__=='__main__':
     video_run()
