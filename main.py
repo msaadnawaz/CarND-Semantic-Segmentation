@@ -139,13 +139,13 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, get_aug_batches_fn, train
     for epoch in range(epochs):
         start_time = time.time()
         for (image, label),(aug_image, aug_label) in zip(get_batches_fn(batch_size), get_aug_batches_fn(batch_size)):
-            _, training_loss = sess.run([train_op, cross_entropy_loss] , 
+            _, training_loss1 = sess.run([train_op, cross_entropy_loss] , 
                                         feed_dict={input_image: image, correct_label: label, keep_prob: 0.5, learning_rate: 1e-5})
         
-            _, training_loss = sess.run([train_op, cross_entropy_loss] , 
-                                        feed_dict={input_image: aug_image, correct_label: aug_label, keep_prob: 0.5, learning_rate: 1e-5})
+            _, training_loss2 = sess.run([train_op, cross_entropy_loss] , 
+                                        feed_dict={input_image: aug_image, correct_label: aug_label, keep_prob: 0.25, learning_rate: 1e-5})
         
-        print("Epoch: %d of %d ; Loss: %.4f; It took %.3f seconds to finish this epoch" %( epoch+1, epochs, training_loss, time.time()-start_time))
+        print("Epoch: %d of %d; Loss: %.4f; Augmented loss: %.4f; It took %.3f seconds to finish this epoch" %( epoch+1, epochs, training_loss1, training_loss2, time.time()-start_time))
 
 tests.test_train_nn(train_nn)
 
@@ -157,8 +157,8 @@ def run():
     runs_dir = './runs'
     tests.test_for_kitti_dataset(data_dir)
     
-    epochs = 1
-    batch_size = 20
+    epochs = 20
+    batch_size = 8
 
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
