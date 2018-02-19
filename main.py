@@ -104,7 +104,7 @@ def optimize(nn_last_layer, correct_label, learning_rate, num_classes):
     # TODO: Implement function
     # Done
     # Check if the arguments can be passed to softmax without reshape
-    logits = tf.reshape(nn_last_layer, (-1, num_classes))
+    logits = tf.reshape(nn_last_layer, (-1, num_classes), name="logits")
     labels = tf.reshape(correct_label, (-1, num_classes))
     
     cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels)

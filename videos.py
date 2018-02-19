@@ -18,18 +18,15 @@ def restore_model(sess):
     saver = tf.train.import_meta_graph('./saved_training_model/model.meta')
     saver.restore(sess,'./saved_training_model/model')
     print("Model restored.")
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='input_image:0', all_tensors=False, all_tensor_names=False)
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='keep_prob:0', all_tensors=False, all_tensor_names=False)
-    chkp.print_tensors_in_checkpoint_file(file_name="./saved_training_model/model", tensor_name='logits:0', all_tensors=False, all_tensor_names=False)
     
-    #graph = tf.get_default_graph()
+    graph = tf.get_default_graph()
     
-    input_image = tf.get_collection("input_image")[0]
-    keep_prob = tf.get_collection("keep_prob")[0]
-    logits = tf.get_collection("logits")[0]
-    #input_image = graph.get_tensor_by_name('input_image:0')
-    #keep_prob = graph.get_tensor_by_name('keep_prob:0')
-    #logits = graph.get_tensor_by_name('logits:0')
+#    input_image = tf.get_collection("input_image")[0]
+#    keep_prob = tf.get_collection("keep_prob")[0]
+#    logits = tf.get_collection("logits")[0]
+    input_image = graph.get_tensor_by_name('input_image:0')
+    keep_prob = graph.get_tensor_by_name('keep_prob:0')
+    logits = graph.get_tensor_by_name('logits:0')
 
     return input_image, keep_prob, logits
 
@@ -63,7 +60,9 @@ def video_run():
     videos = ['project_video', 'challenge_video', 'harder_challenge_video', 'night_video', 'city_challenge']
 
     for video in videos:
-        clip = VideoFileClip(video_data_dir+'/'+video+'.mp4')
+        path = video_data_dir+'/'+video+'.mp4'
+        print(path)
+        clip = VideoFileClip(path)
         output = video_output_dir+'/'+video+'_output.mp4'
     
         road_clip = clip.fl_image(semantic_segmentation) #NOTE: this function expects color images!!
