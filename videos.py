@@ -27,7 +27,7 @@ def restore_model(sess):
     
     keep_prob = graph.get_tensor_by_name('keep_prob:0')
     logits = graph.get_tensor_by_name('logits:0')    
-    input_image = graph.get_tensor_by_name('input_image:0')
+    input_image = graph.get_tensor_by_name('image_input:0')
     
 
     return input_image, keep_prob, logits
