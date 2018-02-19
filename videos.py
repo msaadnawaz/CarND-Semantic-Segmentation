@@ -16,7 +16,7 @@ from tensorflow.python.tools import inspect_checkpoint as chkp
 def restore_model(sess):
     
     saver = tf.train.import_meta_graph('./saved_training_model/model.meta')
-    saver.restore(sess,'./saved_training_model/model')
+    saver.restore(sess,tf.train.latest_checkpoint('./saved_training_model/model'))
     print("Model restored.")
     
     graph = tf.get_default_graph()

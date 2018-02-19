@@ -201,8 +201,8 @@ def run():
 #        tf.add_to_collection("logits", logits)
         
         # Save the variables to disk.
-        save_path = saver.save(sess, './saved_training_model/model', write_meta_graph = 'TRUE')
-        #tf.train.write_graph(sess.graph_def, "./saved_training_model/", "model.pb", False)
+        save_path = saver.save(sess, './saved_training_model/model')
+        tf.train.write_graph(sess.graph_def, "./saved_training_model/", "model.pb", False)
         print("Model saved in path: %s" % save_path)
 
 if __name__ == '__main__':
