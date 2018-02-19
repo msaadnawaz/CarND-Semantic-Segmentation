@@ -35,8 +35,8 @@ class SemanticSegmentation(object):
         #return input_image, keep_prob, logits
     
     def process_image(self, image):
-        image_shape = (160, 576) #shape check    
-        image = scipy.misc.imresize(image, image_shape)
+        self.image_shape = (160, 576) #shape check    
+        image = scipy.misc.imresize(image, self.image_shape)
         
         im_softmax = self.sess.run([tf.nn.softmax(self.logits)],
                                {self.keep_prob: 1.0, self.input_image: [image]})
