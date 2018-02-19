@@ -39,13 +39,13 @@ def load_vgg(sess, vgg_path):
     tf.saved_model.loader.load(sess, [vgg_tag], vgg_path)
     graph = tf.get_default_graph()
     
-    nn_input = graph.get_tensor_by_name(vgg_input_tensor_name)
-    keep = graph.get_tensor_by_name(vgg_keep_prob_tensor_name)
+    input_image = graph.get_tensor_by_name(vgg_input_tensor_name)
+    keep_prob = graph.get_tensor_by_name(vgg_keep_prob_tensor_name)
     layer3_out = graph.get_tensor_by_name(vgg_layer3_out_tensor_name)
     layer4_out = graph.get_tensor_by_name(vgg_layer4_out_tensor_name)
     layer7_out = graph.get_tensor_by_name(vgg_layer7_out_tensor_name)    
     
-    return nn_input, keep, layer3_out, layer4_out, layer7_out
+    return input_image, keep_prob, layer3_out, layer4_out, layer7_out
 
 tests.test_load_vgg(load_vgg, tf)
 
@@ -196,9 +196,9 @@ def run():
         saver = tf.train.Saver()#{'input_image': input_image, 'keep_prob': keep_prob, 'logits': logits})
         # OPTIONAL: Apply the trained model to a video
         
-        tf.add_to_collection("input_image", input_image)
-        tf.add_to_collection("keep_prob", keep_prob)
-        tf.add_to_collection("logits", logits)
+#        tf.add_to_collection("input_image", input_image)
+#        tf.add_to_collection("keep_prob", keep_prob)
+#        tf.add_to_collection("logits", logits)
         
         # Save the variables to disk.
         save_path = saver.save(sess, './saved_training_model/model', write_meta_graph = 'TRUE')
