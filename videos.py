@@ -49,8 +49,8 @@ def semantic_segmentation(image):
     
     image_shape = (160, 576) #shape check
     with tf.Session() as sess:
+        input_image, keep_prob, logits = restore_model(sess)
         with tf.Graph().as_default():
-            input_image, keep_prob, logits = restore_model(sess)
             output_image = process_image(sess, image, input_image, image_shape, keep_prob, logits)
         
     return output_image
