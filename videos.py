@@ -46,13 +46,14 @@ class SemanticSegmentation(object):
         mask = scipy.misc.toimage(mask, mode="RGBA")
         street_im = scipy.misc.toimage(image)
         street_im.paste(mask, box=None, mask=mask)
-        return np.array(street_im)    
+        return np.array(street_im)
     
     def video_run(self):
         video_output_dir = './runs/videos_output'
         video_data_dir = './data/data_videos'
     
-        videos = ['project_video', 'challenge_video', 'harder_challenge_video', 'night_video', 'city_challenge']
+        #videos = ['project_video', 'challenge_video', 'harder_challenge_video', 'night_video', 'city_challenge']
+        videos = ['night_video', 'city_challenge']
         
         with tf.Session() as self.sess:
             self.restore_model()
