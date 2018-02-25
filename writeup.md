@@ -26,8 +26,9 @@ It took around half an hour to train the model for 20 epochs on AWS p2-xlarge ma
 After restoring, the model was used to test the videos from different sources, however, the results were not convincing enough. The major reason being insufficient distinct data for training. The video outputs can be seen in ./runs/videos_output folder.
 
 ## Things to Look Forward to...
-To improve the performance, the following changes can be employed:	
-	1. Minimization of cross-entropy loss is not an ideal metric to learn on, for FCNs because each batch may contain different types of images and calculation of loss over whole image may yield fluctuations. Instead, a differentiable form of mean IOU can be used as training optimizer as mentioned here: https://arxiv.org/pdf/1608.01471.pdf
-	2. As mentioned earlier, KITTI dataset is insufficient for creating a generalized model hence any other more comprehensive dataset like Cityscapes dataset can be used to train the network to expect better results.
-	3. More augmentation followed by hyperparameters tuning accordingly can also yield better results.
-	4. Fusion techniques can be employed to reduce the time for training as well as memory footprint.
+To improve the performance, the following changes can be employed:
+
+1. Minimization of cross-entropy loss is not an ideal metric to learn on, for FCNs because each batch may contain different types of images and calculation of loss over whole image may yield fluctuations. Instead, a differentiable form of mean IOU can be used as training optimizer as mentioned here: https://arxiv.org/pdf/1608.01471.pdf
+2. As mentioned earlier, KITTI dataset is insufficient for creating a generalized model hence any other more comprehensive dataset like Cityscapes dataset can be used to train the network to expect better results.
+3. More augmentation followed by hyperparameters tuning accordingly can also yield better results.
+4. Fusion techniques can be employed to reduce the time for training as well as memory footprint.
