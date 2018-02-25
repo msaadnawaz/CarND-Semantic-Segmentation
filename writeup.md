@@ -20,10 +20,13 @@ While training, dropout of 50% was applied on unaugmented images while only 25% 
 
 ## Comparison of Results with and without Augmentation
 Augmentation convincingly improved the performance and converted blur edges of free-space in sharp edges. Example shown here:
+
 Without augmentation:
+
 ![alt text][im1]
 
 With augmentation:
+
 ![alt text][im2]
 
 ## Saving and Restoring the Model
