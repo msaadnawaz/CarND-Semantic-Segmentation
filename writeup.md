@@ -1,8 +1,12 @@
+[im1](./runs/1518554004.108885/um_000047.png)
+[im2](./runs/1519070410.6020806/um_000047.png)
+[KITTI dataset]: http://www.cvlibs.net/datasets/kitti/
+
 # Semantic Segmentation
-The objective of this project is to find the free space on road using a deep learning technique called Fully Convolutional Networks (link:). The dataset used for training of deep neural network is KITTI dataset (link:) which has two classes i.e. road area and non-road area. 
+The objective of this project is to find the free space on road using a deep learning technique called Fully Convolutional Networks (presented in this paper: https://arxiv.org/pdf/1411.4038.pdf). The dataset used for training of deep neural network is [KITTI dataset] which has two classes i.e. road area and non-road area. 
 
 ## Fully Convolutinal Networks
-The CNNs are good for classification but they los the spatial information which means that the CNNs can tell if there is specific object present in image or not (when trained to classify the object) but can't tell where in the image is this object present.
+The CNNs are good for classification but they lose the spatial information which means that the CNNs can tell if there is specific object present in image or not (when trained to classify the object) but can't tell where in the image is this object present.
 
 For this case, fully convolutional networks (abbreviated as FCNs) are used. They operation called deconvolution is applied, to restore the spatial information. In this project, I have used VGG16 network and built three additional layers; each layer has 1x1 convolution followed by a deconvolution. The details of network are described in the paper mentioned above.
 
@@ -16,8 +20,11 @@ While training, dropout of 50% was applied on unaugmented images while only 25% 
 
 ## Comparison of Results with and without Augmentation
 Augmentation convincingly improved the performance and converted blur edges of free-space in sharp edges. Example shown here:
-[um_000047.png]
+Without augmentation:
+[im1]
 
+With augmentation:
+[im2]
 
 ## Saving and Restoring the Model
 It took around half an hour to train the model for 20 epochs on AWS p2-xlarge machine (with Nvidia Tesla K80 GPU) and the model was stored using the utility provided by tensorflow. Similarly, it was restored to run on videos on local PC.
