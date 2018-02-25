@@ -1,5 +1,5 @@
-[im1](./runs/1518554004.108885/um_000047.png)
-[im2](./runs/1519070410.6020806/um_000047.png)
+[im1]: ./runs/1518554004.108885/um_000047.png "Example output without augmentation"
+[im2]: ./runs/1519070410.6020806/um_000047.png "Example output with augmentation"
 [KITTI dataset]: http://www.cvlibs.net/datasets/kitti/
 
 # Semantic Segmentation
@@ -21,10 +21,10 @@ While training, dropout of 50% was applied on unaugmented images while only 25% 
 ## Comparison of Results with and without Augmentation
 Augmentation convincingly improved the performance and converted blur edges of free-space in sharp edges. Example shown here:
 Without augmentation:
-[im1]
+![alt text][im1]
 
 With augmentation:
-[im2]
+![alt text][im2]
 
 ## Saving and Restoring the Model
 It took around half an hour to train the model for 20 epochs on AWS p2-xlarge machine (with Nvidia Tesla K80 GPU) and the model was stored using the utility provided by tensorflow. Similarly, it was restored to run on videos on local PC.
